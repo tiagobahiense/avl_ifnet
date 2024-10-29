@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deputados e Partidos</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px;}
+        h2 { color: #444}
+        .partido-lista, .deputado-lista {list-style: none; padding: 0;}
+        .item {padding: 10px; border-radius: 4px; margin-bottom: 5px; cursor: pointer; transition: 0.3s;}
+        .item:nth-child(odd) { background-color: #61988e;}
+        .item:nth-child(even) {background-color: #9fc3bd; }
+        .item:hover { background-color: #8bb2a9;}
+        #info {display: none; margin-top: 15px; padding: 10px; background: #9fc3bd; border-radius: 4px;}
+        #info h3 {margin: 0;}
+    </style>
+</head>
+<body>
+    <h2>Selecione um Partido</h2>
+    <ul id="partidoLista" class="partido-lista"></ul>
+    <div id="info">
+        <h3>Sobre o partido</h3>
+        <p><b>Nome:</b> <span id="partidoNome"></span></p>
+        <p><b>ID:</b> <span id="partidoId"></span></p>
+        <button id="mostrarDeputado">Listar Deputados</button>
+    </div>
+    <ul id="deputadoLista" class="deputado-lista"></ul>
+
+    <script>
+        const API_PARTIDOS = 'https://dadosabertos.camara.leg.br/api/v2/partidos?ordem=ASC&ordernarPor=sigla';
+
+        function carregarPartidos() {
+            fetch(API_PARTIDOS)
+                .then(res => res.json())
+                .then(dados => {
+                    const listaPartidos = dados.dados;
+                    const lista = document.getElementById('partidoLista');
+
+                    ListaPartidos.foreach(partido => {
+                        const item = document.createElement('li')
+                        item.className = 'item';
+                        item.textContent = partido.nome;
+                        item.dataset.id = partido.id;
+
+                        item.onclick = () => {
+                            document.getElementById('partidoNome').textContent = partido.nome;
+                            document.getElementById('partidoId').textContent = partido.id;
+                            document.getElementById('info').style.display = 'block';
+
+                            document.getElementById('mostrarDeputados').onclick = () => {
+                                carregarDeputados(partido.sigla);
+                            };
+                        };
+                        lista.appendChild(item);
+                    });
+                })
+                .catch(err => console.error('Erro ao carregar partidos', err));
+        }
+
+        function carregarDeputados(sigla) {
+            const API_DEPUTADOS = `https://dadosabertos.camara.leg.br/api/v2/deputados?ordem=ASC&ordenarPor=nome&siglaPartido=${sigla}`
+            fetch(API_DEPUTADOS)
+                .then(res => res.json())
+                .then(dados => {
+                    const listaDeputados = dados.dados;
+                    const lista = document.getElementById('deputadosLista');
+                    lista.innerHTML = '';
+
+                    if (listaDeputados.length === 0) {
+                        lista.innerHTML = '<li>Deputado não encontrado.</li>';
+                    } else {
+                        listaDeputados.foreach(dep => {
+                            const item = document.createElement('li');
+                            item.className = 'item';
+                            item.textContent = `${dep.name} - ${dep.siglaPartido}`;
+                            lista.appendChild(item);
+                        });
+                    }
+                })
+                .catch(err => console.error('Erro ao carregar deputados:', err));
+        }
+
+        document.addEventListener('DOMContenteloaded', carregarPartidos);
+    </script>
+</body>
+</html>
