@@ -28,7 +28,7 @@
     <ul id="deputadoLista" class="deputado-lista"></ul>
 
     <script>
-        const API_PARTIDOS = 'https://dadosabertos.camara.leg.br/api/v2/partidos?ordem=ASC&ordernarPor=sigla';
+        const API_PARTIDOS = 'https://dadosabertos.camara.leg.br/api/v2/partidos?ordem=ASC&ordenarPor=sigla';
 
         function carregarPartidos() {
             fetch(API_PARTIDOS)
@@ -70,10 +70,10 @@
                     if (listaDeputados.length === 0) {
                         lista.innerHTML = '<li>Deputado não encontrado.</li>';
                     } else {
-                        listaDeputados.foreach(dep => {
+                        listaDeputados.forEach(dep => {
                             const item = document.createElement('li');
                             item.className = 'item';
-                            item.textContent = `${dep.name} - ${dep.siglaPartido}`;
+                            item.textContent = `${dep.nome} - ${dep.siglaPartido}`;
                             lista.appendChild(item);
                         });
                     }
@@ -81,7 +81,7 @@
                 .catch(err => console.error('Erro ao carregar deputados:', err));
         }
 
-        document.addEventListener('DOMContentloaded', carregarPartidos);
+        document.addEventListener('DOMContentLoaded', carregarPartidos);
     </script>
 </body>
 </html>
