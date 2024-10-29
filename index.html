@@ -37,7 +37,7 @@
                     const listaPartidos = dados.dados;
                     const lista = document.getElementById('partidoLista');
 
-                    ListaPartidos.foreach(partido => {
+                    listaPartidos.forEach(partido => {
                         const item = document.createElement('li')
                         item.className = 'item';
                         item.textContent = partido.nome;
@@ -48,7 +48,7 @@
                             document.getElementById('partidoId').textContent = partido.id;
                             document.getElementById('info').style.display = 'block';
 
-                            document.getElementById('mostrarDeputados').onclick = () => {
+                            document.getElementById('mostrarDeputado').onclick = () => {
                                 carregarDeputados(partido.sigla);
                             };
                         };
@@ -64,7 +64,7 @@
                 .then(res => res.json())
                 .then(dados => {
                     const listaDeputados = dados.dados;
-                    const lista = document.getElementById('deputadosLista');
+                    const lista = document.getElementById('deputadoLista');
                     lista.innerHTML = '';
 
                     if (listaDeputados.length === 0) {
@@ -81,7 +81,7 @@
                 .catch(err => console.error('Erro ao carregar deputados:', err));
         }
 
-        document.addEventListener('DOMContenteloaded', carregarPartidos);
+        document.addEventListener('DOMContentloaded', carregarPartidos);
     </script>
 </body>
 </html>
