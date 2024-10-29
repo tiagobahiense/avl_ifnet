@@ -46,7 +46,7 @@ Este projeto é uma aplicação web que faz uso das APIs públicas da Câmara do
 
 1. Clone este repositório:
     ```bash
-    git clone https://github.com/seu-usuario/deputados-partidos.git
+    git clone https://github.com/tiagobahiense/avl_ifnet.git
     ```
 
 2. Abra o arquivo `index.html` em seu navegador preferido.
